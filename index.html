@@ -324,7 +324,7 @@ $(function() {
         return bValue - aValue;
       });
 
-      offers = offers.slice(0, 5);
+      offers = offers.slice(0, 3);
 
       let html = '';
 
@@ -416,14 +416,42 @@ function checkLeads() {
   $.getJSON(
     'https://de6jvomfbm0af.cloudfront.net/public/external/check2.php?testing=0&callback=?',
     function(leads) {
-      if(leads.length > 0) {
-  $('#leadStatus').html('🎉 Entry confirmed! Redirecting...');
 
-  setTimeout(function(){
-    window.location.href = '/success';
-  }, 3000);
-}
+      if(leads.length > 0) {
+
+        $('#leadStatus').html('🎉 Entry confirmed! Preparing your reward...');
+
+        // Hide offer section smoothly
+        $('#offerWrapper').fadeOut(800);
+
+        // Show loading effect
+        $('body').append(`
+          <div id="redirectLoader"
+            class="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center px-6">
+
+            <div class="text-center">
+
+              <div class="w-24 h-24 border-4 border-green-400 border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
+
+              <div class="text-4xl font-black text-green-400 mb-4">
+                SUCCESS
+              </div>
+
+              <div class="text-gray-300 text-lg animate-pulse">
+                Redirecting to confirmation page...
+              </div>
+
+            </div>
+          </div>
+        `);
+
+        // Delay redirect
+        setTimeout(function(){
+          window.location.href = '/success.html';
+        }, 3500);
+
       }
+
     }
   );
 }
